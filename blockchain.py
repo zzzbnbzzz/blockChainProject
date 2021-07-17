@@ -11,7 +11,7 @@ class Blockchain:
         self.chain = []
         self.create_block(proof = 1, previous_hash = '0')
     
-    def create_block(self, proof, previoud_hash):
+    def create_block(self, proof, previous_hash):
         block = {'index': len(self.chain) + 1,
                  'timestamp': str(datetime.datetime.now()),
                  'proof': proof,
@@ -34,7 +34,7 @@ class Blockchain:
         return new_proof
     
     def hash(self, block):
-        encoded_block = jason.dumps(block, sort_keys = True).encode()
+        encoded_block = json.dumps(block, sort_keys = True).encode()
         return hashlib.sha256(encoded_block).hexdigest()
         
     def is_chain_valid(self, chain):
@@ -46,7 +46,7 @@ class Blockchain:
                 return False
             previous_proof = previous_block['proof']
             proof = block['proof']
-            hash_operation = hashlib.sha256(str(new_proof**2 - previous_proof**2).encode()).hexdigest()
+            hash_operation = hashlib.sha256(str(proof**2 - previous_proof**2).encode()).hexdigest()
             if hash_operation[:4] != '0000':
                 return False
             previous_block = block
